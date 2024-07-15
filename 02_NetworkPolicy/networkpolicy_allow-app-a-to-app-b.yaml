@@ -1,0 +1,14 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  namespace: secure
+  name: allow-app-a-to-app-b
+spec:
+  podSelector:
+    matchLabels:
+      app: app-b
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+            app: app-a

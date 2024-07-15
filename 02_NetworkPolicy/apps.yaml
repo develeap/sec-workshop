@@ -4,7 +4,7 @@ metadata:
   name: app-a
   namespace: secure
   labels:
-    app: a
+    app: app-a
 spec:
   containers:
   - name: app-a
@@ -16,10 +16,22 @@ metadata:
   name: app-b
   namespace: secure
   labels:
-    app: b
+    app: app-b
 spec:
   containers:
   - name: app-b
+    image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-c
+  namespace: secure
+  labels:
+    app: app-c
+spec:
+  containers:
+  - name: app-c
     image: nginx
 ---
 apiVersion: v1
@@ -29,7 +41,7 @@ metadata:
   namespace: secure
 spec:
   selector:
-    app: a
+    app: app-a
   ports:
     - protocol: TCP
       port: 80
@@ -42,7 +54,20 @@ metadata:
   namespace: secure
 spec:
   selector:
-    app: b
+    app: app-b
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-c
+  namespace: secure
+spec:
+  selector:
+    app: app-c
   ports:
     - protocol: TCP
       port: 80
