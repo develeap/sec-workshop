@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod
+  namespace: secure
+spec:
+  containers:
+  - name: root
+    image: nginx
+  securityContext:
+    runAsUser: 0
