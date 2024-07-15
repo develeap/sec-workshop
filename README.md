@@ -41,3 +41,15 @@ kubectl apply -f 02_NetworkPolicy/apps.yaml
 ```
 
 You task is to put policies in place so that traffic from `app-a` can reach `app-b`, but not `app-c`.
+
+## Task 3: Seccomp Profiles
+
+Create `default-pod`:
+
+```bash
+kubectl apply -f 03_seccomp-profiles/pod_default.yaml
+```
+
+Task: Experiment changing the seccomp profile from `RuntimeDefault` to `Localhost`.
+Tip: Examine the `profiles` folder in the repo to see the seccomp profiles available.
+Localhost Profiles will be located under `profiles/<profile name>`.
