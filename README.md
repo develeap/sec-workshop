@@ -2,10 +2,10 @@
 
 ## Set Up Kind with Calico
 
-Use the kind_config.yaml file to create a kind cluster with the default CNI disabled.
+Use the kind_config.yaml file to create a kind cluster with the default CNI disabled and seccomp profiles loaded.
 
 ```bash
-kind create cluster --config=00_kind-with-calico/kind_config.yaml
+cd 00_kind-with-calico && kind create cluster --config=kind_config.yaml
 ```
 
 Install Calico:
