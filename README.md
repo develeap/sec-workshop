@@ -53,3 +53,64 @@ kubectl apply -f 03_seccomp-profiles/pod_default.yaml
 Task: Experiment changing the seccomp profile from `RuntimeDefault` to `Localhost`.
 Tip: Examine the `profiles` folder in the repo to see the seccomp profiles available.
 Localhost Profiles will be located under `profiles/<profile name>`.
+
+## Task 4 (Demo) Image Signing with `cosign`
+
+Install `cosign`:
+
+```bash
+chmod +x 04_image-signing/cosign_install.sh && 04_image-signing/cosign_install.sh
+```
+
+Generate a key pair:
+
+```bash
+cosign generate-key-pair
+```
+
+Pull the latest Alpine image:
+
+```bash
+docker pull alpine:latest
+```
+
+Attempt to sign an image where we have no push permissions:
+
+```bash
+cosign sign --key cosign.key alpine:latest
+```
+
+Attempt to sign an image that's not been pushed:
+
+```bash
+docker tag alpine:latest fatliverfreddny/contenttrust:not_uploaded
+cosign sign --key cosign.key fatliverfreddny/contenttrust:not_uploaded
+```
+
+Retag the Alpine image and push:
+
+```bash
+docker tag alpine:latest fatliverfreddny/contenttrust:signed
+docker push fatliverfreddny/contenttrust:signed
+```
+
+Now this is done, proceed to sign the image:
+
+```bash
+cosign sign --key cosign.key fatliverfreddny/contenttrust:signed
+```
+
+Verify the signature:
+
+```bash
+cosign verify --key cosign.pub fatliverfreddny/contenttrust:signed | jq .
+```
+
+Now let's modify the image without signing it, and attempt to verify the signature:
+
+```bash
+docker pull alpine:3.19
+docker tag alpine:3.19 fatliverfreddny/contenttrust:signed
+docker push fatliverfreddny/contenttrust:signed
+cosign verify --key cosign.pub fatliverfreddny/contenttrust:signed | jq .
+```
