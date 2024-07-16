@@ -83,34 +83,34 @@ cosign sign --key cosign.key alpine:latest
 Attempt to sign an image that's not been pushed:
 
 ```bash
-docker tag alpine:latest fatliverfreddny/contenttrust:not_uploaded
-cosign sign --key cosign.key fatliverfreddny/contenttrust:not_uploaded
+docker tag alpine:latest <DOCKERHUB_ACCOUNT>/contenttrust:not_uploaded
+cosign sign --key cosign.key <DOCKERHUB_ACCOUNT>/contenttrust:not_uploaded
 ```
 
 Retag the Alpine image and push:
 
 ```bash
-docker tag alpine:latest fatliverfreddny/contenttrust:signed
-docker push fatliverfreddny/contenttrust:signed
+docker tag alpine:latest <DOCKERHUB_ACCOUNT>/contenttrust:signed
+docker push <DOCKERHUB_ACCOUNT>/contenttrust:signed
 ```
 
 Now this is done, proceed to sign the image:
 
 ```bash
-cosign sign --key cosign.key fatliverfreddny/contenttrust:signed
+cosign sign --key cosign.key <DOCKERHUB_ACCOUNT>/contenttrust:signed
 ```
 
 Verify the signature:
 
 ```bash
-cosign verify --key cosign.pub fatliverfreddny/contenttrust:signed | jq .
+cosign verify --key cosign.pub <DOCKERHUB_ACCOUNT>/contenttrust:signed | jq .
 ```
 
 Now let's modify the image without signing it, and attempt to verify the signature:
 
 ```bash
 docker pull alpine:3.19
-docker tag alpine:3.19 fatliverfreddny/contenttrust:signed
-docker push fatliverfreddny/contenttrust:signed
-cosign verify --key cosign.pub fatliverfreddny/contenttrust:signed | jq .
+docker tag alpine:3.19 <DOCKERHUB_ACCOUNT>/contenttrust:signed
+docker push <DOCKERHUB_ACCOUNT>/contenttrust:signed
+cosign verify --key cosign.pub <DOCKERHUB_ACCOUNT>/contenttrust:signed | jq .
 ```
